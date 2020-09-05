@@ -1,24 +1,25 @@
 from socket import gaierror
 import smtplib
+from email.message import EmailMessage
 
 def sendEmail(adressTo, name, adressFrom, password):
     print(f"Sending email to {adressTo} from {adressFrom}")
     port = 587
     smtp_server = "smtp.gmail.com"
     login = adressFrom
+    msg = EmailMessage()
+    msg['Subject'] = "asdasdasdasd"
+    msg['From'] = f"<{adressFrom}>"
+    msg['To'] = f" <{adressTo}>"
+    msg.set_content("This is my first message with Python.")
 
-    message = f"""\
-    Subject: Hi Gmail!
-    To: {adressTo}
-    From: {adressFrom}
-
-    This is my first message with Python."""
 
     try:
         with smtplib.SMTP(smtp_server, port) as server:
             server.starttls()
             server.login(login, password)
-            server.sendmail(adressFrom, adressTo, message)
+            server.send_message(msg)
+
 
         print('Sent')
     except (gaierror, ConnectionRefusedError):
